@@ -1,6 +1,7 @@
 package money
 
 import (
+	"math"
 	"strconv"
 	"strings"
 )
@@ -34,5 +35,21 @@ func (d *Decimal) simplify() {
 	for d.subunits%10 == 0 && d.precision > 0 {
 		d.precision--
 		d.subunits /= 10
+	}
+}
+
+// pow10 is a quick implementation of how to raise 10 to a given power.
+func pow10(power byte) int64 {
+	switch power {
+	case 0:
+		return 1
+	case 1:
+		return 10
+	case 2:
+		return 100
+	case 3:
+		return 1000
+	default:
+		return int64(math.Pow(10, float64(power)))
 	}
 }
