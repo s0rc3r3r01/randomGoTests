@@ -1,7 +1,6 @@
 package money
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 )
@@ -22,7 +21,7 @@ func ParseDecimal(value string) (Decimal, error) {
 	intPart, fracPart, _ := strings.Cut(value, ".")
 	subunits, err := strconv.ParseInt(intPart+fracPart, 10, 64)
 	if err != nil {
-		return Decimal{}, fmt.Errorf("%w: %s", ErrInvalidDecimal, err.Error())
+		return Decimal{}, ErrInvalidDecimal
 	}
 	if subunits > maxDecimal {
 		return Decimal{}, ErrTooLarge

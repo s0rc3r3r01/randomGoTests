@@ -17,12 +17,14 @@ func TestDecimal(t *testing.T) {
 			err:      nil,
 		},
 		"not a number": {
-			decimal: "NaN",
-			err:     ErrInvalidDecimal,
+			decimal:  "NaN",
+			expected: Decimal{},
+			err:      ErrInvalidDecimal,
 		},
 		"too large": {
-			decimal: "100000000",
-			err:     ErrTooLarge,
+			decimal:  "1234567890123",
+			expected: Decimal{},
+			err:      ErrTooLarge,
 		},
 	}
 	for name, tc := range tt {
