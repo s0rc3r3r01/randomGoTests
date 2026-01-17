@@ -46,5 +46,5 @@ func main() {
 		_, _ = fmt.Fprintln(os.Stderr, err.Error())
 		os.Exit(1)
 	}
-	fmt.Println("Amount:", amount, "; Currency:", toCurrency)
+	fmt.Println(amount, toCurrency)
 }
