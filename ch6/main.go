@@ -48,7 +48,7 @@ func main() {
 	}
 	convertedAmount, err := money.Convert(amount, toCurrency)
 	if err != nil {
-		_ = fmt.Errorf("unable to convert %s to %s: %s.\n", amount, toCurrency, err.Error())
+		_ = fmt.Errorf("unable to convert %s to %s: %s.\n ", amount, toCurrency, err.Error())
 		os.Exit(1)
 	}
 	fmt.Printf("%s = %s\n", amount, convertedAmount)
