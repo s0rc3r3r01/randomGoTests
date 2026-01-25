@@ -13,11 +13,16 @@ const (
 )
 
 type Client struct {
+	url string
 }
 
-func (c Client) FetchExchagngeeRate(source, target money.Currency) (money.ExchangeRate, error) {
+func (c Client) FetchExchagngeRate(source, target money.Currency) (money.ExchangeRate, error) {
 
-	res, err := http.Get(path)
+	if c.url == "" {
+		c.url = path
+	}
+
+	res, err := http.Get(c.url)
 	if err != nil {
 		return money.ExchangeRate{}, fmt.Errorf("%w: %d", ErrCallingServer, err)
 	}
