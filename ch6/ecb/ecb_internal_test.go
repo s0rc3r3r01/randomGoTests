@@ -1,4 +1,4 @@
-package ecbank
+package ecb
 
 import (
 	"fmt"
