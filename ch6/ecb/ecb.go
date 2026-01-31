@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"learngo-pockets/moneyconverter/money"
 	"net/http"
+	"time"
 )
 
 const (
@@ -13,16 +14,23 @@ const (
 )
 
 type Client struct {
-	url string
+	url    string
+	client http.Client
 }
 
-func (c Client) FetchExchagngeRate(source, target money.Currency) (money.ExchangeRate, error) {
+func newClient(timeout time.Duration) Client {
+	return Client{
+		client: http.Client{Timeout: timeout},
+	}
+}
+
+func (c Client) FetchExchangeRate(source, target money.Currency) (money.ExchangeRate, error) {
 
 	if c.url == "" {
 		c.url = path
 	}
 
-	res, err := http.Get(c.url)
+	res, err := c.client.Get(c.url)
 	if err != nil {
 		return money.ExchangeRate{}, fmt.Errorf("%w: %d", ErrCallingServer, err)
 	}
