@@ -1,12 +1,19 @@
 package newgame
 
-import "net/http"
+import (
+	"encoding/json"
+	"log"
+	"net/http"
+	"randomGoTests/httpgordle/internal/api"
+)
 
 func Handle(w http.ResponseWriter, req *http.Request) {
-	if req.Method != http.MethodPost {
-		w.WriteHeader(http.StatusMethodNotAllowed)
-		return
-	}
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
-	_, _ = w.Write([]byte("Creating new game"))
+	apiGame := api.GameResponse{}
+	err := json.NewEncoder(w).Encode(apiGame)
+	if err != nil {
+		log.Printf("failed to write JSON response: %s", err)
+	}
+
 }
