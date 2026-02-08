@@ -31,3 +31,4 @@ go.work.sum
 # .idea/
 # .vscode/
 ch6/.vscode/launch.json
+httpgordle/.vscode/launch.json
