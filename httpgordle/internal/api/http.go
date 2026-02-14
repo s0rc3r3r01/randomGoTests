@@ -1,7 +1,9 @@
 package api
 
 const (
-	NewGameRoute = "/games"
+	NewGameRoute   = "/games"
+	GameID         = "id"
+	GetStatusRoute = "/games/{" + GameID + "}"
 )
 
 type GameResponse struct {
