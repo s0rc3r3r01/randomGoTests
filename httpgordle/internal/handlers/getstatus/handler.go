@@ -1,4 +1,4 @@
-// Package getstaus
+// Package getstatus
 package getstatus
 
 import (
