@@ -4,6 +4,7 @@ const (
 	NewGameRoute   = "/games"
 	GameID         = "id"
 	GetStatusRoute = "/games/{" + GameID + "}"
+	GuessRoute     = "/games/{" + GameID + "}"
 )
 
 type GameResponse struct {
@@ -18,4 +19,8 @@ type GameResponse struct {
 type Guess struct {
 	Word     string `json:"word"`
 	Feedback string `json:"feedback"`
+}
+
+type GuessRequest struct {
+	Guess string `json:"guess"`
 }
