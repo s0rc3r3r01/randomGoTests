@@ -1,3 +1,4 @@
+// Package newgame is the best
 package newgame
 
 import (
