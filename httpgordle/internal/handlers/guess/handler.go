@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"randomGoTests/httpgordle/internal/api"
+	"randomGoTests/httpgordle/internal/session"
 )
 
 func Handle(w http.ResponseWriter, req *http.Request) {
@@ -20,13 +21,24 @@ func Handle(w http.ResponseWriter, req *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	apiGame := api.GameResponse{
-		ID: id,
+
+	game, err := guess(id, r)
+	if err != nil {
+		log.Printf("failed to decode request")
+		http.Error(w, "broken logic", http.StatusBadRequest)
 	}
+
+	apiGame := api.ToGameResponse(game)
 	w.Header().Set("Content-Type", "application/json")
 	err = json.NewEncoder(w).Encode(apiGame)
 	if err != nil {
 		// The header has already been set. Nothing much we can do here.
 		log.Printf("failed to write response: %s", err)
 	}
+}
+
+func guess(id string, r api.GuessRequest) (session.Game, error) {
+	return session.Game{
+		ID: session.GameID(id),
+	}, nil
 }

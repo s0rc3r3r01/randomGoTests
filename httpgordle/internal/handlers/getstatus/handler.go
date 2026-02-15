@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"randomGoTests/httpgordle/internal/api"
+	"randomGoTests/httpgordle/internal/session"
 )
 
 func Handle(w http.ResponseWriter, req *http.Request) {
@@ -15,13 +16,20 @@ func Handle(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 	log.Printf("retrieve statuts of game with id: %v", id)
-	apiGame := api.GameResponse{
-		ID: id,
-	}
+
+	game := getGame(id)
+	apiGame := api.ToGameResponse(game)
+
 	w.Header().Set("Content-Type", "application/json")
 	err := json.NewEncoder(w).Encode(apiGame)
 	if err != nil {
 		log.Printf("failed to write JSON response: %s", err)
 	}
 
+}
+
+func getGame(id string) session.Game {
+	return session.Game{
+		ID: session.GameID(id),
+	}
 }

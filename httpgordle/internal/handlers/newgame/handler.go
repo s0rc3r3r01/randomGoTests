@@ -6,15 +6,33 @@ import (
 	"log"
 	"net/http"
 	"randomGoTests/httpgordle/internal/api"
+	"randomGoTests/httpgordle/internal/session"
 )
 
 func Handle(w http.ResponseWriter, req *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
-	apiGame := api.GameResponse{}
-	err := json.NewEncoder(w).Encode(apiGame)
-	if err != nil {
-		log.Printf("failed to write JSON response: %s", err)
-	}
 
+	if game, err := createGame(); err != nil {
+		log.Printf("Unable to create a new game: %s", err)
+		http.Error(w, "failed to create new game", http.StatusInternalServerError)
+		return
+	} else {
+		{
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusCreated)
+			res := response(game)
+			err := json.NewEncoder(w).Encode(res)
+			if err != nil {
+				log.Printf("failed to write JSON response: %s", err)
+			}
+		}
+
+	}
+}
+
+func createGame() (session.Game, error) {
+	return session.Game{}, nil
+}
+
+func response(game session.Game) api.GameResponse {
+	return api.GameResponse{}
 }

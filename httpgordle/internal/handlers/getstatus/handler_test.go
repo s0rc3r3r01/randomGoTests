@@ -18,6 +18,6 @@ func TestHandle(t *testing.T) {
 	recorder := httptest.NewRecorder()
 	Handle(recorder, req)
 	assert.Equal(t, http.StatusOK, recorder.Code)
-	assert.JSONEq(t, `{"id":"123456","attempts_left":0,"guesses":null,"solution":"",
+	assert.JSONEq(t, `{"id":"123456","attempts_left":0,"guesses":[],"solution":"",
 "wordlength":0,"status":""}`, recorder.Body.String())
 }
