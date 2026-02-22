@@ -6,11 +6,10 @@ import (
 	"log"
 	"net/http"
 	"randomGoTests/httpgordle/internal/api"
-	"randomGoTests/httpgordle/internal/repository"
 	"randomGoTests/httpgordle/internal/session"
 )
 
-func Handler(db *repository.GameRepository) http.HandlerFunc {
+func Handler(repo interface{}) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		id := req.PathValue(api.GameID)
 		if id == "" {
@@ -19,7 +18,7 @@ func Handler(db *repository.GameRepository) http.HandlerFunc {
 		}
 		log.Printf("retrieve statuts of game with id: %v", id)
 
-		game := getGame(id, db)
+		game := getGame(id)
 		apiGame := api.ToGameResponse(game)
 
 		w.Header().Set("Content-Type", "application/json")
@@ -30,7 +29,7 @@ func Handler(db *repository.GameRepository) http.HandlerFunc {
 
 	}
 }
-func getGame(id string, db *repository.GameRepository) session.Game {
+func getGame(id string) session.Game {
 	return session.Game{
 		ID: session.GameID(id),
 	}

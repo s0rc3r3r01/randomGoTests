@@ -16,7 +16,8 @@ func TestHandle(t *testing.T) {
 	req.SetPathValue(api.GameID, "123456")
 
 	recorder := httptest.NewRecorder()
-	Handle(recorder, req)
+
+	Handler(nil)(recorder, req)
 	assert.Equal(t, http.StatusOK, recorder.Code)
 	assert.JSONEq(t, `{"id":"123456","attempts_left":0,"guesses":[],"solution":"",
 "wordlength":0,"status":""}`, recorder.Body.String())

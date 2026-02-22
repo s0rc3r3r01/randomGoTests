@@ -6,11 +6,15 @@ import (
 	"log"
 	"net/http"
 	"randomGoTests/httpgordle/internal/api"
-	"randomGoTests/httpgordle/internal/repository"
 	"randomGoTests/httpgordle/internal/session"
 )
 
-func Handler(db *repository.GameRepository) http.HandlerFunc {
+type gameGuesser interface {
+	Find(session.GameID) (session.Game, error)
+	Update(game session.Game) error
+}
+
+func Handler(db gameGuesser) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		r := api.GuessRequest{}
 		id := req.PathValue(api.GameID)
@@ -39,7 +43,7 @@ func Handler(db *repository.GameRepository) http.HandlerFunc {
 		}
 	}
 }
-func guess(id string, r api.GuessRequest, db *repository.GameRepository) (session.Game, error) {
+func guess(id string, r api.GuessRequest, db gameGuesser) (session.Game, error) {
 	return session.Game{
 		ID: session.GameID(id),
 	}, nil

@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"randomGoTests/httpgordle/internal/api"
+	"randomGoTests/httpgordle/internal/session"
 	"strings"
 	"testing"
 
@@ -11,6 +12,13 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+type gameGuesserStub struct {
+	err error
+}
+
+func (g gameGuesserStub) F(_ session.Game) error {
+	return g.err
+}
 func TestHandle(t *testing.T) {
 	body := strings.NewReader(`{"guess":"pocket"}`)
 	req, err := http.NewRequest(http.MethodPost, "/games/", body)
@@ -18,7 +26,8 @@ func TestHandle(t *testing.T) {
 	req.SetPathValue(api.GameID, "123456")
 
 	recorder := httptest.NewRecorder()
-	Handle(recorder, req)
+	Handler(nil)(recorder, req)
+
 	assert.Equal(t, http.StatusOK, recorder.Code)
 	assert.Equal(t, "application/json", recorder.Header().Get("Content-Type"))
 	assert.JSONEq(t, `{"id":"123456","attempts_left":0,"guesses":[],"solution":"","wordlength":0,"status":""}`, recorder.Body.String())
